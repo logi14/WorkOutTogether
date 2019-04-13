@@ -13,5 +13,13 @@ namespace WorkOutTogether.Models
         public string OwnerId { get; set; }
         [Required]
         public DateTime StartDate { get; set; }
+        [Required]
+        public double longitude { get; set; }
+        [Required]
+        public double latitude { get; set; }
+        [Required]
+        public int HowManyPeople { get; set; }
+        [Required]
+        public int CurrentPeopleNumber { get; set; }
     }
 }
