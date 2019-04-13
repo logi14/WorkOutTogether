@@ -18,7 +18,7 @@ namespace WorkOutTogether
         public int HouseNumber { get; set; }
         [Required]
         public string City { get; set; }
-
+        [Required]
         public string PostCode { get; set; }
     }
 }
