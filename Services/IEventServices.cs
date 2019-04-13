@@ -16,5 +16,6 @@ namespace WorkOutTogether.Services
         Task<List<Event>> GetEventJoined(String idUser);
         Task<int> GetEventStatus(Guid itemId, string userId);
         Task<EventWithStatus[]> GetEventWithStatus(string userId);
+        Task<List<User>> GetUsersJoined(Guid idEvent);
     }
 }

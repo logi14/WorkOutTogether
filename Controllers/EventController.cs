@@ -114,5 +114,22 @@ namespace WorkOutTogether.Controllers
 
             return View(model);
         }
+
+        [Route("{controller}/{action}/{id?}")]
+        public async Task<IActionResult> EventDetails(Guid id)
+        {
+            var currenEvent = await _eventService.GetEvent(id);
+            var userJoined = await _eventService.GetUsersJoined(id);
+            
+            
+            var model = new EventsForDetailsViewModel()
+            {
+                eventDetailed = currenEvent,
+                users = userJoined.ToArray()
+
+            };
+
+            return View(model);
+        }
     }
 }
