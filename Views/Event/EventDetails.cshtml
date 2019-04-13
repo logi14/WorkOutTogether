@@ -1,0 +1,23 @@
+@model EventsForDetailsViewModel
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<div>
+    <div>@ViewData["Title"]</div>
+    <h2>Events you joined</h2>
+    <p>@Model.eventDetailed.HowManyPeople </p>
+    <p>@Model.eventDetailed.Name </p>
+    <p>@Model.eventDetailed.CurrentPeopleNumber </p>
+    <table>
+    @foreach (var item in Model.users)
+    {
+       <tr>
+            <td>
+               @item.Name
+            </td>
+        </tr>
+    }
+    </table>
+</div>
