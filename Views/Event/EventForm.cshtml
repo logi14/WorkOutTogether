@@ -87,8 +87,8 @@
         }
 
             function addEvent() {
-                document.getElementById("lat").value = lastMarker.getPosition().lat();
-                document.getElementById("lng").value = lastMarker.getPosition().lng();
+                document.getElementById("lat").value = lastMarker.getPosition().lat().toString();
+                document.getElementById("lng").value = lastMarker.getPosition().lng().toString();
             }
     </script>
     <script language="javascript" type="text/javascript" async defer 

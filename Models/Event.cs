@@ -14,9 +14,9 @@ namespace WorkOutTogether.Models
         [Required]
         public DateTime StartDate { get; set; }
         [Required]
-        public double longitude { get; set; }
+        public string longitude { get; set; }
         [Required]
-        public double latitude { get; set; }
+        public string latitude { get; set; }
         [Required]
         public int HowManyPeople { get; set; }
         [Required]
