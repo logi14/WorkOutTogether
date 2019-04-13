@@ -1,4 +1,7 @@
+@using Microsoft.AspNetCore.Identity
 @model EventViewModel
+@inject UserManager<User> UserManager
+@inject SignInManager<User> SignInManager
 
 @{
     ViewData["Title"] = "Events";
@@ -14,7 +17,24 @@
                @item.Name;  
             </td>
             <td>
-                <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>    
+<<<<<<< HEAD
+                @if(item.doIOwnedIt)
+                {
+                    <p>This is your event</p>
+                }else if(item.Status == 1) {
+                    <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@item.Id">Resign</a>  
+                }else{
+                    <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>  
+                }
+=======
+                @if(item.Status == 1)
+                {
+                    <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@item.Id">resign</a>  
+                      
+                }else{
+                    <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>  
+                }   
+>>>>>>> 5e4817c275bd64b0ce2d1bf7e0cc80db6fdf57e4
             </td>
         </tr>
     }

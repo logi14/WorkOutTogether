@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,9 @@ namespace WorkOutTogether.Controllers
                 return Challenge();
             }
 
-            var events = await _eventService.GetActiveEvents(currentUser);
+            var events = await _eventService.GetEventWithStatus(currentUser.Id);
 
+            
             var model = new EventViewModel()
             {
                 Events = events
@@ -74,6 +76,24 @@ namespace WorkOutTogether.Controllers
                 if(!successful)
                 {
                     currenEvent.CurrentPeopleNumber++;
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        [Route("{controller}/{action}/{id?}")]
+        public async Task<IActionResult> ResignEvent(Guid id)
+        {
+            var currenEvent = await _eventService.GetEvent(id);
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currenEvent.CurrentPeopleNumber < currenEvent.HowManyPeople)
+            {
+                var successful = await _eventService.ResignEventAsync(currenEvent, currentUser);
+                if (!successful)
+                {
+                    currenEvent.CurrentPeopleNumber--;
                     return RedirectToAction("Index");
                 }
             }
