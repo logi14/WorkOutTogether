@@ -1,0 +1,19 @@
+@model EventViewModel
+
+@{
+    ViewData["Title"] = "Events you created";
+}
+
+<div>
+    <div>@ViewData["Title"]</div>
+    <table>
+    @foreach (var item in Model.Events)
+    {
+       <tr>
+            <td>
+               @item.Name 
+            </td>
+        </tr>
+    }
+    </table>
+</div>

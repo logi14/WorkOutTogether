@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using WorkOutTogether.Data;
@@ -16,7 +17,14 @@ namespace WorkOutTogether.Services
         public async Task<Event> GetEvent(Guid IdEvent)
         {
             return await _context.Event.FirstOrDefaultAsync(x => x.Id == IdEvent);
-        } 
+        }
+
+        public async Task<Event[]> GetEventCreated(String idUser)
+        {
+            return await _context.Event
+                .Where(x => x.OwnerId == idUser)
+                .ToArrayAsync();
+        }
         public async Task<Event[]> GetActiveEvents(User user)
         {
             return await _context.Event

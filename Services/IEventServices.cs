@@ -10,5 +10,6 @@ namespace WorkOutTogether.Services
         Task<bool> AddEventAsync(Event newEvent, User user);
         Task<bool> JoinEventAsync(Event joiningEvent, User joiningUser);
         Task<Event> GetEvent(Guid IdEvent);
+        Task<Event[]> GetEventCreated(String idUser);
     }
 }
