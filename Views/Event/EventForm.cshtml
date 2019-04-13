@@ -5,15 +5,23 @@
     <input asp-for="Name">
     <label asp-for="StartDate">Event data</label>
     <input asp-for="StartDate">
+    <input asp-for="latitude" id="lat" style="display:none;">
+    <input asp-for="longitude" id="lng" style="display:none;">
     <label asp-for="HowManyPeople">How many people</label>
     <input asp-for="HowManyPeople">
     <button type="submit">Add</button>
+    <button type="submit" onclick="addEvent()">Add</button>
+
 
     <div style="height:500px;width:100%;" id="map"></div>
 
 <script language="javascript" type="text/javascript" >
 
         var chuj = ["Gdańsk Aleja Grunwaldzka", "Politechnika Gdańska", "Gdańsk Dworzec Główny"];
+
+        var addedMarkerThisSession = false;
+
+        var lastMarker;
 
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -25,8 +33,14 @@
             var geocoder = new google.maps.Geocoder();
 
             google.maps.event.addListener(map, 'click', function (event) {
+                if (addedMarkerThisSession == true){
+                    chuj.splice(-1,1);
+                    lastMarker.setMap(null);
+                }
                 chuj.push(event.latLng.lat() + " " + event.latLng.lng());
                 geocodeAddress(geocoder, map, chuj[chuj.length-1]);
+                addEvent();
+                addedMarkerThisSession = true;
             });
 
             for (var i = 0; i < chuj.length; i++) {
@@ -39,7 +53,7 @@
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status === 'OK') {
                     resultsMap.setCenter(results[0].geometry.location);
-                    var marker = new google.maps.Marker({
+                    lastMarker = new google.maps.Marker({
                         map: resultsMap,
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
@@ -53,8 +67,8 @@
 
 
 
-                google.maps.event.addListener(marker, 'click', function () {
-                    alert("Latitude: " + marker.getPosition().lat() + "Longitude: " + marker.getPosition().lng());
+                google.maps.event.addListener(lastMarker, 'click', function () {
+                    alert("Latitude: " + lastMarker.getPosition().lat() + "Longitude: " + lastMarker.getPosition().lng());
                     //infowindow = new google.maps.InfoWindow({
                     //    content: 'Przykładowy opis znacznika'
                     //});
@@ -62,12 +76,16 @@
                 });
 
             });
+
+
+
+
         }
 
-        function placeMarker(location, resultMap) {
-            
-        }
-
+            function addEvent() {
+                document.getElementById("lat").value = lastMarker.getPosition().lat();
+                document.getElementById("lng").value = lastMarker.getPosition().lng();
+            }
     </script>
     <script language="javascript" type="text/javascript" async defer 
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcVbgOrcixUdvZg0jkiGyGGz8sOYZss6I&callback=initMap">
