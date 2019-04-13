@@ -1,0 +1,13 @@
+body {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url(../img/run.jpg);
+}
+
+@media only screen and (max-width: 1000px) {
+
+    body{
+        background-image: url(../img/run-s.jpg);
+    }
+}
