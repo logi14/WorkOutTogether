@@ -66,16 +66,82 @@ namespace WorkOutTogether.Services
 
         public async Task<bool> JoinEventAsync(Event joiningEvent, User joiningUser)
         {
-            var eventRequest = new EventRequest();
-            eventRequest.RequestId = Guid.NewGuid();
-            eventRequest.EventId = joiningEvent.Id;
-            eventRequest.UserId = joiningUser.Id;
-            eventRequest.Status = 1;
+            var eventRequest = await _context.EventRequest.Where(x => x.EventId == joiningEvent.Id && x.UserId == joiningUser.Id).FirstOrDefaultAsync();
+            if(eventRequest == null)
+            {
+                eventRequest = new EventRequest();
+                eventRequest.RequestId = Guid.NewGuid();
+                eventRequest.EventId = joiningEvent.Id;
+                eventRequest.UserId = joiningUser.Id;
+                eventRequest.Status = 1;
 
-            _context.EventRequest.Add(eventRequest);
+                _context.EventRequest.Add(eventRequest);
+
+                var saveResult = await _context.SaveChangesAsync();
+                return saveResult == 1;
+            }
+            else{
+                eventRequest.Status = 1;
+                _context.EventRequest.Update(eventRequest);
+
+                var saveResult = await _context.SaveChangesAsync();
+                return saveResult == 1;
+            }
+        }
+        public async Task<bool> ResignEventAsync(Event resigningEvent, User resigningUser)
+        {
+            var eventRequest = await _context.EventRequest.Where(x => x.EventId == resigningEvent.Id && x.UserId == resigningUser.Id).FirstOrDefaultAsync();
+
+            if (eventRequest == null)
+            {
+                return false;
+            }
+
+            eventRequest.Status = 0;
+
+            _context.EventRequest.Update(eventRequest);
 
             var saveResult = await _context.SaveChangesAsync();
             return saveResult == 1;
+        }
+
+        public async Task<int> GetEventStatus(Guid itemId, string userId)
+        {
+            var temp = await _context.EventRequest.Where(x => x.EventId == itemId && x.UserId == userId).FirstOrDefaultAsync();
+            return temp.Status;
+        }
+
+        public async Task<EventWithStatus[]> GetEventWithStatus(string userId)
+        {
+            var events = await _context.Event.ToArrayAsync();
+            var eventsWithStatus = new List<EventWithStatus>();
+
+            foreach (var item in events)
+            {
+                var singleEventWithStatus = new EventWithStatus()
+                {
+                    Id = item.Id,
+                    Name = item.Name,
+                    OwnerId = item.OwnerId,
+                    HowManyPeople = item.HowManyPeople,
+                    CurrentPeopleNumber = item.CurrentPeopleNumber,
+                    StartDate = item.StartDate,
+                    longitude = item.longitude,
+                    latitude = item.latitude,
+                };
+
+                var statusTemp = await _context.EventRequest.Where(x => x.EventId == item.Id && x.UserId == userId).FirstOrDefaultAsync();
+                if (statusTemp == null){
+                    singleEventWithStatus.Status = 0;
+                }else{
+                    singleEventWithStatus.Status = statusTemp.Status;
+                }
+                singleEventWithStatus.doIOwnedIt = (item.OwnerId == userId);
+
+                eventsWithStatus.Add(singleEventWithStatus);
+            }
+
+            return eventsWithStatus.ToArray();
         }
     }
 }
