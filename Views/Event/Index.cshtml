@@ -4,15 +4,22 @@
     ViewData["Title"] = "Events";
 }
 
-<div>
+<div onload="loadEvents()">
     <div>@ViewData["Title"]</div>
-    <table>
+    <table id="events">
     @foreach (var item in Model.Events)
     {
        <tr>
+
             <td>
                <a asp-controller="Event" asp-action="EventDetails" asp-route-id = "@item.Id">@item.Name</a>;  
+
+            <td >
+            <td >
+                @item.StartDate
             </td>
+            <td style="display:none;">@item.longitude</td>
+            <td style="display:none;" >@item.latitude</td>
             <td>
                 <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>    
             </td>
@@ -21,4 +28,62 @@
     </table>
 </div>
 <a asp-area="" asp-controller="Event" asp-action="EventForm">Add event</a>
+     <div style="height:500px;width:100%;" id="map"></div>
 
+
+<script language="javascript" type="text/javascript" >
+    
+    var events = [];
+
+        function loadEvents(){
+            var table = document.getElementById("events");
+            var rowLen = table.rows.length;
+            for (var i = 0; i< rowLen; i++){
+                var row = table.rows[i];
+                var tmp = row.cells[2].innerHTML;
+                var tmp2 = " ";
+                var tmp3 = row.cells[3].innerHTML;
+                var event = tmp3.concat(tmp2, tmp);
+                events.push(event);
+            }
+        }
+
+            function initMap() {
+                loadEvents();
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: 54.3510232, lng: 18.644458999999983 },
+                scrollwheel: true,
+                clickable: true
+            });
+            var geocoder = new google.maps.Geocoder();
+
+            for (var i = 0; i < events.length; i++) {
+                geocodeAddress(geocoder, map, events[i]);
+
+            }
+        }
+
+        function geocodeAddress(geocoder, resultsMap, address) {
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    resultsMap.setCenter(results[0].geometry.location);
+                    lastMarker = new google.maps.Marker({
+                        map: resultsMap,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 7
+                        },
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+
+
+</script>
+    <script language="javascript" type="text/javascript" async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcVbgOrcixUdvZg0jkiGyGGz8sOYZss6I&callback=initMap">
+    </script>
