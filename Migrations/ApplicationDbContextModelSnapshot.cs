@@ -2,17 +2,15 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkOutTogether.Data;
 
-namespace WorkOutTogether.Data.Migrations
+namespace WorkOutTogether.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190413114026_AddEvent")]
-    partial class AddEvent
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,6 +132,10 @@ namespace WorkOutTogether.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("CurrentPeopleNumber");
+
+                    b.Property<int>("HowManyPeople");
+
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -141,6 +143,10 @@ namespace WorkOutTogether.Data.Migrations
                         .IsRequired();
 
                     b.Property<DateTime>("StartDate");
+
+                    b.Property<double>("latitude");
+
+                    b.Property<double>("longitude");
 
                     b.HasKey("Id");
 

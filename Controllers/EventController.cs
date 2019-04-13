@@ -35,6 +35,11 @@ namespace WorkOutTogether.Controllers
 
             return View(model);
         }
+
+        public IActionResult EventForm()
+        {
+            return View();
+        }
         public async Task<IActionResult> AddEvent(Event newEvent)
         {
             //  if (!ModelState.IsValid)

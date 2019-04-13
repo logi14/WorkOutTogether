@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorkOutTogether.Data;
 
-namespace WorkOutTogether.Data.Migrations
+namespace WorkOutTogether.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190413093543_addUser")]
-    partial class addUser
+    [Migration("20190413150924_afterBug")]
+    partial class afterBug
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,32 @@ namespace WorkOutTogether.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WorkOutTogether.Models.Event", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("CurrentPeopleNumber");
+
+                    b.Property<int>("HowManyPeople");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<double>("latitude");
+
+                    b.Property<double>("longitude");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Event");
+                });
+
             modelBuilder.Entity("WorkOutTogether.User", b =>
                 {
                     b.Property<string>("Id")
@@ -136,19 +162,27 @@ namespace WorkOutTogether.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("City")
+                        .IsRequired();
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<DateTime>("DateOfBirth");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<int>("HouseNumber");
+
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -162,7 +196,16 @@ namespace WorkOutTogether.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("PostCode")
+                        .IsRequired();
+
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<string>("Street")
+                        .IsRequired();
+
+                    b.Property<string>("Surname")
+                        .IsRequired();
 
                     b.Property<bool>("TwoFactorEnabled");
 
