@@ -44,6 +44,7 @@
                 var tmp2 = " ";
                 var tmp3 = row.cells[3].innerHTML;
                 var event = tmp3.concat(tmp2, tmp);
+               // alert(event);
                 events.push(event);
             }
         }
@@ -65,6 +66,7 @@
         }
 
         function geocodeAddress(geocoder, resultsMap, address) {
+            //alert(address);
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status === 'OK') {
                     resultsMap.setCenter(results[0].geometry.location);
