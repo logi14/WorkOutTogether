@@ -39,17 +39,17 @@ button.accept-policy {
 -------------------------------------------------- */
 html {
   position: relative;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px);
 }
 
 body {
-
   margin-bottom: 60px;
+  
 }
 
 .footer {
   position: absolute;
-  bottom: 1px;
+  bottom: 0;
   width: 100%;
   white-space: nowrap;
   /* Set the fixed height of the footer here */
@@ -62,16 +62,20 @@ body {
 /* Styles */
 
 *{
-  box-sizing: border-box;
-  
+  box-sizing: border-box; 
 }
 
 body{
-min-height: 100vh;
+  min-height: calc(100vh - 60px);
 }
 
 footer{
-background-color: #e5e5e5;
+  background-color: #e5e5e5;
+  overflow: hidden;
+}
+
+.title{
+  font-family: 'Lobster', sans-serif;
 }
 
 .full {
