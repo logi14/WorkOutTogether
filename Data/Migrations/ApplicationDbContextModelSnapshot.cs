@@ -127,6 +127,24 @@ namespace WorkOutTogether.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WorkOutTogether.Models.Event", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Event");
+                });
+
             modelBuilder.Entity("WorkOutTogether.User", b =>
                 {
                     b.Property<string>("Id")
@@ -168,7 +186,8 @@ namespace WorkOutTogether.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("PostCode");
+                    b.Property<string>("PostCode")
+                        .IsRequired();
 
                     b.Property<string>("SecurityStamp");
 
