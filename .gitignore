@@ -1,3 +1,4 @@
+*.db
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -12,4 +13,3 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
-.db
