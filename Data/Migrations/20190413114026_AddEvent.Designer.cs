@@ -9,8 +9,8 @@ using WorkOutTogether.Data;
 namespace WorkOutTogether.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190413100428_ExtendUser")]
-    partial class ExtendUser
+    [Migration("20190413114026_AddEvent")]
+    partial class AddEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,24 @@ namespace WorkOutTogether.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WorkOutTogether.Models.Event", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Event");
+                });
+
             modelBuilder.Entity("WorkOutTogether.User", b =>
                 {
                     b.Property<string>("Id")
@@ -170,7 +188,8 @@ namespace WorkOutTogether.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
-                    b.Property<string>("PostCode");
+                    b.Property<string>("PostCode")
+                        .IsRequired();
 
                     b.Property<string>("SecurityStamp");
 

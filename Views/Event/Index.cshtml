@@ -1,0 +1,23 @@
+@model EventViewModel
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<div>
+    <div>@ViewData["Title"]</div>
+    <table>
+    @foreach (var item in Model.Events)
+    {
+       <tr>
+            <td>
+                @item.Name; 
+            </td>
+        </tr>
+    }
+    </table>
+</div>
+<div>
+    @await Html.PartialAsync("AddEventPartial", new Event())
+</div>
+
