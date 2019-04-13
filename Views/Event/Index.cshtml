@@ -14,7 +14,13 @@
                @item.Name;  
             </td>
             <td>
-                <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>    
+                @if(item.Status == 1)
+                {
+                    <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@item.Id">resign</a>  
+                      
+                }else{
+                    <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>  
+                }   
             </td>
         </tr>
     }
