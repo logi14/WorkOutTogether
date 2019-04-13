@@ -4,32 +4,38 @@
     ViewData["Title"] = "Events";
 }
 
-<div>
-    <div>@ViewData["Title"]</div>
-    <h2>Events you joined</h2>
-    <table>
-    @foreach (var item in Model.EventsJoined)
-    {
-       <tr>
-            <td>
-               @item.Name 
-            </td>
-        </tr>
-    }
-    </table>
-</div>
+<div class="row pt-3">
 
-<div>
-    <div>@ViewData["Title"]</div>
-    <h2>Events you created</h2>
-    <table>
+
+<div class="col-md-6">
+    <!-- @ViewData["Title"] -->
+    <h2>Events you created:</h2>
+
+    <ul class="list-group pt-3">
     @foreach (var item in Model.EventsCreated)
     {
-       <tr>
-            <td>
-               @item.Name 
-            </td>
-        </tr>
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+            @item.Name 
+            <span class="badge badge-primary badge-pill">data</span>
+        </li>
     }
-    </table>
+    </ul>
+</div>
+
+<div class="col-md-6">
+    <!-- @ViewData["Title"] -->
+    <h2>Events you joined:</h2>
+    <ul class="list-group pt-3">
+    @foreach (var item in Model.EventsJoined)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center bg-light">
+            @item.Name 
+            <span class="badge badge-primary badge-pill">data</span>
+        </li>
+    }
+    </ul>
+</div>
+
+
+
 </div>

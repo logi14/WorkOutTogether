@@ -1,12 +1,45 @@
 @model EventViewModel
 
+<style>
+    .container{
+
+        max-width: unset;
+    }
+</style>
+
 @{
     ViewData["Title"] = "Events";
 }
+00
+<div class="row">
+<div class="col-md-5">
+
+    <h3>
+        @ViewData["Title"]
+    </h3>
+
+
+    <div class="list-group">
+            @foreach (var item in Model.Events)
+    {
+        <div class="list-group-item list-group-item-action flex-column align-items-start bg-light">
+            <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">@item.Name;</h5>
+            <p class="text-muted"><a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a></p>
+            </div>
+            <p class="mb-1">opis</p>
+            <small class="text-muted">więcej opisu</small>
+        </div>
+    }
+    </div>
+
+    
+    <!-- <table>
 
 <div onload="loadEvents()">
     <div>@ViewData["Title"]</div>
     <table id="events">
+
     @foreach (var item in Model.Events)
     {
        <tr>
@@ -25,9 +58,17 @@
             </td>
         </tr>
     }
-    </table>
-</div>
+    </table> -->
+
+<br/>
 <a asp-area="" asp-controller="Event" asp-action="EventForm">Add event</a>
+
+</div>
+<div class="col-md-7">
+
+</div>
+</div>
+
      <div style="height:500px;width:100%;" id="map"></div>
 
 
