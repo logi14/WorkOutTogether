@@ -41,12 +41,25 @@ namespace WorkOutTogether.Services
             }
 
             return EventsToRetern;
-                        
+        }
+        public async Task<List<User>> GetUsersJoined(Guid idEvent)
+        {
+            var Events = await _context.EventRequest
+                .Where(x=> x.Status == 1 && x.EventId == idEvent)
+                .ToListAsync();
+            
+            var UsersToRetern = new List<User>();
+            foreach (var item in Events)
+            { 
+                var temp = await _context.Users.FirstOrDefaultAsync(x => x.Id == item.UserId);
+                UsersToRetern.Add(temp);
+            }
 
+            return UsersToRetern;
         }
         public async Task<Event[]> GetActiveEvents(User user)
         {
-            return await _context.Event
+            return await _context.Event.Where(x => x.OwnerId != user.Id)
                 .ToArrayAsync();
         }
 

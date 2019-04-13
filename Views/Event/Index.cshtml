@@ -10,9 +10,11 @@
     @foreach (var item in Model.Events)
     {
        <tr>
+
+            <td>
+               <a asp-controller="Event" asp-action="EventDetails" asp-route-id = "@item.Id">@item.Name</a>;  
+
             <td >
-               @item.Name
-            </td>
             <td >
                 @item.StartDate
             </td>
