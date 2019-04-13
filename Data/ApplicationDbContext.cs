@@ -14,6 +14,7 @@ namespace WorkOutTogether.Data
         {
         }
         public DbSet<Event> Event { get; set; }
+        public DbSet<EventRequest> EventRequest { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
