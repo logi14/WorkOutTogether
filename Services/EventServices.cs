@@ -59,7 +59,7 @@ namespace WorkOutTogether.Services
         }
         public async Task<Event[]> GetActiveEvents(User user)
         {
-            return await _context.Event.Where(x => x.OwnerId != user.Id)
+            return await _context.Event
                 .ToArrayAsync();
         }
 
