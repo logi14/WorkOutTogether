@@ -11,7 +11,7 @@
     {
        <tr>
             <td>
-               @item.Name;  
+               <a asp-controller="Event" asp-action="EventDetails" asp-route-id = "@item.Id">@item.Name</a>;  
             </td>
             <td>
                 <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>    

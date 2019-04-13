@@ -13,5 +13,7 @@ namespace WorkOutTogether.Services
         Task<Event> GetEvent(Guid IdEvent);
         Task<Event[]> GetEventCreated(String idUser);
         Task<List<Event>> GetEventJoined(String idUser);
+        Task<List<User>> GetUsersJoined(Guid idEvent);
+        
     }
 }
