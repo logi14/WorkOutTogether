@@ -56,5 +56,25 @@ namespace WorkOutTogether.Controllers
 
             return RedirectToAction("Index");
         }
+        
+        [Route("{controller}/{action}/{id?}")]
+        public async Task<IActionResult> JoinEvent(Guid id)
+        {
+            var currenEvent = await _eventService.GetEvent(id);
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if(currenEvent.CurrentPeopleNumber < currenEvent.HowManyPeople)
+            {
+                var successful = await _eventService.JoinEventAsync(currenEvent, currentUser);
+                if(!successful)
+                {
+                    currenEvent.CurrentPeopleNumber++;
+                    return RedirectToAction("Index");
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+    
     }
 }
