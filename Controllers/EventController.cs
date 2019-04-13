@@ -80,6 +80,19 @@ namespace WorkOutTogether.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> DisplayCreatedEvent()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var events = await _eventService.GetEventCreated(currentUser.Id);
+
+            var model = new EventViewModel()
+            {
+                Events = events
+            };
+
+            return View(model);
+        }
+
     
     }
 }

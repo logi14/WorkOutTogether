@@ -7,8 +7,11 @@
     <input asp-for="StartDate">
     <input asp-for="latitude" id="lat" style="display:none;">
     <input asp-for="longitude" id="lng" style="display:none;">
-
+    <label asp-for="HowManyPeople">How many people</label>
+    <input asp-for="HowManyPeople">
+    <button type="submit">Add</button>
     <button type="submit" onclick="addEvent()">Add</button>
+
 
     <div style="height:500px;width:100%;" id="map"></div>
 
