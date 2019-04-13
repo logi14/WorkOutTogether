@@ -6,4 +6,69 @@
     <label asp-for="StartDate">Event data</label>
     <input asp-for="StartDate">
     <button type="submit">Add</button>
+
+    <div style="height:500px;width:100%;" id="map"></div>
+
+<script language="javascript" type="text/javascript" >
+
+        var chuj = ["Gdańsk Aleja Grunwaldzka", "Politechnika Gdańska", "Gdańsk Dworzec Główny"];
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: -34.397, lng: 150.644 },
+                scrollwheel: true,
+                clickable: true
+            });
+            var geocoder = new google.maps.Geocoder();
+
+            google.maps.event.addListener(map, 'click', function (event) {
+                chuj.push(event.latLng.lat() + " " + event.latLng.lng());
+                geocodeAddress(geocoder, map, chuj[chuj.length-1]);
+            });
+
+            for (var i = 0; i < chuj.length; i++) {
+                geocodeAddress(geocoder, map, chuj[i]);
+
+            }
+        }
+
+        function geocodeAddress(geocoder, resultsMap, address) {
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status === 'OK') {
+                    resultsMap.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: resultsMap,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 7
+                        },
+                        position: results[0].geometry.location
+                    });
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+
+
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    alert("Latitude: " + marker.getPosition().lat() + "Longitude: " + marker.getPosition().lng());
+                    //infowindow = new google.maps.InfoWindow({
+                    //    content: 'Przykładowy opis znacznika'
+                    //});
+                    //infowindow.open(map, marker);
+                });
+
+            });
+        }
+
+        function placeMarker(location, resultMap) {
+            
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript" async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcVbgOrcixUdvZg0jkiGyGGz8sOYZss6I&callback=initMap">
+    </script>
 </form>
+    
