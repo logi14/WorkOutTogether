@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,24 @@ namespace WorkOutTogether.Services
             return await _context.Event
                 .Where(x => x.OwnerId == idUser)
                 .ToArrayAsync();
+        }
+
+        public async Task<List<Event>> GetEventJoined(String idUser)
+        {
+            var Events = await _context.EventRequest
+                .Where(x => x.Status == 1 && x.UserId == idUser)
+                .ToListAsync();
+
+            var EventsToRetern = new List<Event>();
+            foreach (var item in Events)
+            { 
+                var temp = await _context.Event.FirstOrDefaultAsync(x => x.Id == item.EventId);
+                EventsToRetern.Add(temp);
+            }
+
+            return EventsToRetern;
+                        
+
         }
         public async Task<Event[]> GetActiveEvents(User user)
         {

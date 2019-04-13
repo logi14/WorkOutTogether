@@ -1,0 +1,35 @@
+@model EventToDisplayViewModel
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<div>
+    <div>@ViewData["Title"]</div>
+    <h2>Events you joined</h2>
+    <table>
+    @foreach (var item in Model.EventsJoined)
+    {
+       <tr>
+            <td>
+               @item.Name 
+            </td>
+        </tr>
+    }
+    </table>
+</div>
+
+<div>
+    <div>@ViewData["Title"]</div>
+    <h2>Events you created</h2>
+    <table>
+    @foreach (var item in Model.EventsCreated)
+    {
+       <tr>
+            <td>
+               @item.Name 
+            </td>
+        </tr>
+    }
+    </table>
+</div>

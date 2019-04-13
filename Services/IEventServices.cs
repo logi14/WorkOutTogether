@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WorkOutTogether.Models;
 
@@ -11,5 +12,6 @@ namespace WorkOutTogether.Services
         Task<bool> JoinEventAsync(Event joiningEvent, User joiningUser);
         Task<Event> GetEvent(Guid IdEvent);
         Task<Event[]> GetEventCreated(String idUser);
+        Task<List<Event>> GetEventJoined(String idUser);
     }
 }
