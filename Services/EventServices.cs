@@ -193,7 +193,7 @@ namespace WorkOutTogether.Services
 
         public async Task<bool> RemoveEvent(Guid eventId, string userId)
         {
-            var eventRequest = await _context.Event.Where(x => x.Id == eventId && x.OwnerId == userId).FirstOrDefaultAsync();
+            var eventRequest = await _context.Event.FirstOrDefaultAsync(x => x.Id == eventId && x.OwnerId == userId);
             if (eventRequest == null)
             {
                 return false;

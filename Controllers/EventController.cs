@@ -142,6 +142,7 @@ namespace WorkOutTogether.Controllers
             if (eventId == null)
                 return RedirectToAction("Index");
 
+            Console.WriteLine("aer" + eventId);
             var currentUser = await _userManager.GetUserAsync(User);
             var succeed = await _eventService.RemoveEvent(eventId, currentUser.Id);
 
