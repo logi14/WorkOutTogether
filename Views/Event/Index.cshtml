@@ -20,6 +20,9 @@
         margin-bottom: -16px;
         min-height: calc(100vh - 118px);
     }
+    .scroll{
+        overflow-y: scroll;
+    }
 
 </style>
 
@@ -27,7 +30,7 @@
 
     <div class="row">
 
-        <div class="col-md-5">
+        <div class="col-md-5 scroll">
             <h3>
                 @ViewData["Title"]
             </h3>
@@ -63,7 +66,7 @@
             <a asp-area="" asp-controller="Event" asp-action="EventForm">Add event</a>
 
         </div>
-        <div class="col-md-7 pr-0">
+        <div class="col-md-7 pr-0 pl-0">
             <div id="map" class="full-map"></div>
         </div>
     </div>
