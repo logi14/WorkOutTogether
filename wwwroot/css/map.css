@@ -1,0 +1,21 @@
+body{
+    margin: 0;
+}
+.container{
+    max-width: none;
+    margin: 0;
+}
+main{
+    width: 100%;
+}
+.full-map{
+    margin-top: -16px;
+    margin-bottom: -16px;
+    min-height: calc(100vh - 58px);
+}
+.scroll{
+    overflow-y: scroll;
+}
+footer{
+    display: none;
+}
