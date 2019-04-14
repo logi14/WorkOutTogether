@@ -17,7 +17,7 @@
     <p>@Model.Owner.Name @Model.Owner.Surname</p>
     
     <table>
-    @foreach (var item in Model.Users)
+    @foreach (var item in Model.UsersAccepted)
     {
        <tr>
             <td>
@@ -26,7 +26,22 @@
         </tr>
     }
     </table>
-    <button asp-controller="Event" asp-action="RemoveEvent" asp-route-eventId = "@Model.EventDetailed.Id" class="btn btn-primary">Remove Event</button>  
+
+    <table>
+    @foreach (var item in Model.UsersToAccept)
+    {
+       <tr>
+            <td>
+               @item.Name
+            </td>
+            <td>
+                <a asp-controller="Event" asp-action="AccepUser" asp-route-eventId = "@Model.EventDetailed.Id" asp-route-userId = "@item.Id">Accept User</a>
+                <a asp-controller="Event" asp-action="RejectUser" asp-route-eventId = "@Model.EventDetailed.Id" asp-route-userId = "@item.Id">Reject User</a>
+            </td>
+        </tr>
+    }
+    </table>
+    <a asp-controller="Event" asp-action="RemoveEvent" asp-route-eventId = "@Model.EventDetailed.Id">Remove Event</a>  
 </div>
 }else{
 <div>
@@ -39,7 +54,7 @@
     <p>@Model.Owner.Name @Model.Owner.Surname</p>
     
     <table>
-    @foreach (var item in Model.Users)
+    @foreach (var item in Model.UsersAccepted)
     {
        <tr>
             <td>
@@ -50,9 +65,13 @@
     </table>
     <div>
         @if(Model.EventDetailed.Status == 1) {
-            <button asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Resign</button>  
+            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id">Resign (you are accepted)</a>  
+        }else if(Model.EventDetailed.Status == 2){
+            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id">Resign</a>  
+        }else if (Model.EventDetailed.Status == 3){
+             <p>You were rejected by event owner.</p>
         }else{
-            <button asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Join</button>  
+            <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@Model.EventDetailed.Id">Join</a> 
         }
     </div>
 </div>

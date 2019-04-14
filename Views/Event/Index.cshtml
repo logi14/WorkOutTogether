@@ -41,9 +41,13 @@
                         @if(item.doIOwnedIt){
                             <p>This is your event</p>
                         }else if(item.Status == 1) {
-                            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@item.Id">Resign</a>  
+                            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@item.Id">Resign (you are accepted)</a>  
+                        }else if(item.Status == 2){
+                            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@item.Id">Resign</a> 
+                        }else if(item.Status == 3){
+                             <p>You were rejected by event owner.</p>
                         }else{
-                            <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a>  
+                            <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@item.Id">Join</a> 
                         }
                     </td>
                 </tr>

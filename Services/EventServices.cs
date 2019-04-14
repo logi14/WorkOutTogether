@@ -45,12 +45,27 @@ namespace WorkOutTogether.Services
         public async Task<List<User>> GetUsersJoined(Guid idEvent)
         {
             var Events = await _context.EventRequest
-                .Where(x=> x.Status == 1 && x.EventId == idEvent)
+                .Where(x => x.Status == 1 && x.EventId == idEvent)
                 .ToListAsync();
             
             var UsersToRetern = new List<User>();
             foreach (var item in Events)
             { 
+                var temp = await _context.Users.FirstOrDefaultAsync(x => x.Id == item.UserId);
+                UsersToRetern.Add(temp);
+            }
+
+            return UsersToRetern;
+        }
+        public async Task<List<User>> GetUsersToAccept(Guid idEvent)
+        {
+            var Events = await _context.EventRequest
+                .Where(x => x.Status == 2 && x.EventId == idEvent)
+                .ToListAsync();
+
+            var UsersToRetern = new List<User>();
+            foreach (var item in Events)
+            {
                 var temp = await _context.Users.FirstOrDefaultAsync(x => x.Id == item.UserId);
                 UsersToRetern.Add(temp);
             }
@@ -86,7 +101,7 @@ namespace WorkOutTogether.Services
                 eventRequest.RequestId = Guid.NewGuid();
                 eventRequest.EventId = joiningEvent.Id;
                 eventRequest.UserId = joiningUser.Id;
-                eventRequest.Status = 1;
+                eventRequest.Status = 2;
 
                 _context.EventRequest.Add(eventRequest);
 
@@ -94,7 +109,7 @@ namespace WorkOutTogether.Services
                 return saveResult == 1;
             }
             else{
-                eventRequest.Status = 1;
+                eventRequest.Status = 2;
                 _context.EventRequest.Update(eventRequest);
 
                 var saveResult = await _context.SaveChangesAsync();
@@ -111,6 +126,40 @@ namespace WorkOutTogether.Services
             }
 
             eventRequest.Status = 0;
+
+            _context.EventRequest.Update(eventRequest);
+
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1;
+        }
+
+        public async Task<bool> AcceptUserAsync(Guid eventId, string userId)
+        {
+            var eventRequest = await _context.EventRequest.Where(x => x.EventId == eventId && x.UserId == userId).FirstOrDefaultAsync();
+
+            if (eventRequest == null)
+            {
+                return false;
+            }
+
+            eventRequest.Status = 1;
+
+            _context.EventRequest.Update(eventRequest);
+
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1;
+        }
+
+        public async Task<bool> RejectUserAsync(Guid eventId, string userId)
+        {
+            var eventRequest = await _context.EventRequest.Where(x => x.EventId == eventId && x.UserId == userId).FirstOrDefaultAsync();
+
+            if (eventRequest == null)
+            {
+                return false;
+            }
+
+            eventRequest.Status = 3;
 
             _context.EventRequest.Update(eventRequest);
 
