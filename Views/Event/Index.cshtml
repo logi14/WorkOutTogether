@@ -7,24 +7,8 @@
     ViewData["Title"] = "Events";
 }
 
-<style>
-    .container{
-        max-width: none;
-        margin: 0;
-    }
-    main{
-        width: 100%;
-    }
-    .full-map{
-        margin-top: -16px;
-        margin-bottom: -16px;
-        min-height: calc(100vh - 118px);
-    }
-    .scroll{
-        overflow-y: scroll;
-    }
 
-</style>
+<link rel="stylesheet" href="~/css/map.css" />
 
 <div onload="loadEvents()">
 
@@ -40,7 +24,10 @@
             {
             <tr>
                     <td >
-                    @item.Name
+                    <a asp-area="" asp-controller="Event" asp-action="EventDetails">
+                        @item.Name
+                        </a>
+                    
                     </td>
                     <td >
                         @item.StartDate
@@ -64,6 +51,7 @@
             }
             </table>
             <a asp-area="" asp-controller="Event" asp-action="EventForm">Add event</a>
+            <a asp-area="" asp-controller="Event" asp-action="EventDetails">Event details</a>
 
         </div>
         <div class="col-md-7 pr-0 pl-0">
