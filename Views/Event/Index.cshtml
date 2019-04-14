@@ -79,6 +79,9 @@
     var infoWindowOpened = false;
 
 
+
+
+
         function loadEvents(){
             var table = document.getElementById("events");
             var rowLen = table.rows.length;
@@ -109,16 +112,18 @@
         }
 
         function geocodeAddress(geocoder, resultsMap, address) {
-            //alert(address);
+                       var runnerIcon = {
+        url: "../img/runner.png", // url
+        scaledSize: new google.maps.Size(25, 25), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+        };
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status === 'OK') {
                     resultsMap.setCenter(results[0].geometry.location);
                     lastMarker = new google.maps.Marker({
                         map: resultsMap,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 7
-                        },
+                        icon: runnerIcon,
                         position: results[0].geometry.location
                     });
                     markers.push(lastMarker);
