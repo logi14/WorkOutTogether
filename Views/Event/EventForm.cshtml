@@ -18,6 +18,12 @@
 
     <input asp-for="latitude" id="lat" style="display:none;">
     <input asp-for="longitude" id="lng" style="display:none;">
+    <label asp-for="HowManyPeople">How many people</label>
+    <input asp-for="HowManyPeople">
+    <label>Wpisz Adres</label>
+    <input id="address">
+    <button type="button" onclick="addAddres()">Dodaj</button>
+    <button type="submit" id='smt' disabled="true" onclick="addEvent()">Add</button>
 
     <label asp-for="HowManyPeople">How many people:</label>
     <input asp-for="HowManyPeople"class="form-control"><br/>
@@ -43,6 +49,9 @@
 
         var map;
 
+
+
+
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 12,
@@ -55,23 +64,29 @@
                 if (addedMarkerThisSession){
                     lastMarker.setMap(null);
                     addedMarkerThisSession = false;
+                    document.getElementById("smt").disabled = true;
                 }
                 geocodeAddress(geocoder, map, event.latLng.lat() + " " + event.latLng.lng());
                 addedMarkerThisSession = true;
+                document.getElementById("smt").disabled = false;
             });
 
         }
 
         function geocodeAddress(geocoder, resultsMap, address) {
+            var runnerIcon = {
+             url: "../img/runner.png", // url
+             scaledSize: new google.maps.Size(25, 25), // scaled size
+             origin: new google.maps.Point(0,0), // origin
+             anchor: new google.maps.Point(0, 0) // anchor
+             };
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status === 'OK') {
                     resultsMap.setCenter(results[0].geometry.location);
                     lastMarker = new google.maps.Marker({
                         map: resultsMap,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 7
-                        },
+                        icon: runnerIcon,
+                        scale: 3,
                         position: results[0].geometry.location
                     });
                 } else {
@@ -102,8 +117,13 @@
         }
 
             function addEvent() {
-                document.getElementById("lat").value = lastMarker.getPosition().lat().toString();
-                document.getElementById("lng").value = lastMarker.getPosition().lng().toString();
+                if(addedMarkerThisSession){
+                    document.getElementById("lat").value = lastMarker.getPosition().lat().toString();
+                    document.getElementById("lng").value = lastMarker.getPosition().lng().toString();
+                } else {
+                    alert("Musisz wybrać lokalizacje");
+                }
+                
             }
     </script>
     <script language="javascript" type="text/javascript" async defer 

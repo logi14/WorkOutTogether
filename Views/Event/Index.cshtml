@@ -22,12 +22,11 @@
             <table id="events" class="table pt-3">
             @foreach (var item in Model.Events)
             {
-            <tr class="bg-light border">
-                    <td >
-                    <a asp-area="" asp-controller="Event" asp-action="EventDetails" asp-route-id = "@item.Id">
-                        @item.Name
-                    </a>
-                    
+
+            <tr class="eventRows" onmouseover="hoverMarker()">
+                    <td>
+                         @item.Name
+
                     </td>
                     <td >
                         @item.StartDate
@@ -60,6 +59,12 @@
 <script language="javascript" type="text/javascript" >
     
     var events = [];
+    var markers = [];
+    var infoWindowOpened = false;
+
+
+
+
 
         function loadEvents(){
             var table = document.getElementById("events");
@@ -87,28 +92,95 @@
 
             for (var i = 0; i < events.length; i++) {
                 geocodeAddress(geocoder, map, events[i]);
-
             }
         }
 
         function geocodeAddress(geocoder, resultsMap, address) {
-            //alert(address);
+                       var runnerIcon = {
+        url: "../img/runner.png", // url
+        scaledSize: new google.maps.Size(25, 25), // scaled size
+        origin: new google.maps.Point(0,0), // origin
+        anchor: new google.maps.Point(0, 0) // anchor
+        };
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status === 'OK') {
                     resultsMap.setCenter(results[0].geometry.location);
                     lastMarker = new google.maps.Marker({
                         map: resultsMap,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: 7
-                        },
+                        icon: runnerIcon,
                         position: results[0].geometry.location
                     });
+                    markers.push(lastMarker);
                 } else {
                     alert('Geocode was not successful for the following reason: ' + status);
                 }
+
+                google.maps.event.addListener(lastMarker, 'click', function () {
+                    var table = document.getElementById("events");
+                    var rows = table.getElementsByTagName("tr");
+                    for (i = 0; i < rows.length; i++) {
+                        row = table.rows[i];
+                     var lng = row.cells[2].innerHTML.trim();
+                     var lat = row.cells[3].innerHTML.trim();                       
+                    if (parseFloat(lng).toFixed(6) == parseFloat(this.getPosition().lng()).toFixed(6) && parseFloat(lat).toFixed(6) == parseFloat(this.getPosition().lat()).toFixed(6)){
+                        if (infoWindowOpened){
+                                infowindow.close();
+                                infoWindowOpened= false;
+                            }
+                            //TODO content dymka
+                            var contentString = 'Event: ' + row.cells[0].innerHTML.trim() + "\n takes place: " + row.cells[1].innerHTML.trim();
+                            infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+                            infowindow.open(map,this);
+                            for (var x = 0; x<rows.length;x++){
+                                rows[x].style.background = "#FFFFFF"
+                            }
+                            row.style.background = "#808080";
+                            infoWindowOpened = true;
+                        }
+                    }
+                });
+
             });
         }
+
+
+        function hoverMarker(){
+            var table = document.getElementById("events");
+            var rows = table.getElementsByTagName("tr");
+            for (i = 0; i < rows.length; i++) {
+            var currentRow = table.rows[i];
+             var createClickHandler = function(row) {
+                    return function() {
+                    var lng = row.cells[2].innerHTML.trim();
+                    var lat = row.cells[3].innerHTML.trim();
+                    for (var k = 0; k < markers.length ; k++){
+                        if (parseFloat(lng).toFixed(6) == parseFloat(markers[k].getPosition().lng()).toFixed(6) && parseFloat(lat).toFixed(6) == parseFloat(markers[k].getPosition().lat()).toFixed(6)){
+                            if (infoWindowOpened){
+                                infowindow.close();
+                                infoWindowOpened= false;
+                            }
+                            //TODO content dymka
+                            var contentString = 'Event: ' + row.cells[0].innerHTML.trim() + "\n takes place: " + row.cells[1].innerHTML.trim();
+                            infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+                            infowindow.open(map, markers[k]);
+                            infoWindowOpened = true;
+                            for (var x = 0; x<rows.length;x++){
+                                rows[x].style.background = "#FFFFFF"
+                            }
+                            row.style.background = "#808080";
+                        }
+                    }
+                  };
+             };
+              currentRow.onclick = createClickHandler(currentRow);
+         }
+        }
+
+
 
 
 </script>
