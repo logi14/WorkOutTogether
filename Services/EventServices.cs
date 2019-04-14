@@ -156,5 +156,52 @@ namespace WorkOutTogether.Services
 
             return eventsWithStatus.ToArray();
         }
+
+        public async Task<EventWithStatus> GetSingleEventWithStatus(string userId, Guid eventId)
+        {
+            var currentEvent = await _context.Event.Where(x => x.Id == eventId).FirstOrDefaultAsync();
+            var currentEventWithStatus = new EventWithStatus()    
+                {
+                    Id = currentEvent.Id,
+                    Name = currentEvent.Name,
+                    OwnerId = currentEvent.OwnerId,
+                    HowManyPeople = currentEvent.HowManyPeople,
+                    CurrentPeopleNumber = currentEvent.CurrentPeopleNumber,
+                    StartDate = currentEvent.StartDate,
+                    longitude = currentEvent.longitude,
+                    latitude = currentEvent.latitude,
+                };
+
+                var statusTemp = await _context.EventRequest.Where(x => x.EventId == currentEvent.Id && x.UserId == userId).FirstOrDefaultAsync();
+                if (statusTemp == null)
+                {
+                    currentEventWithStatus.Status = 0;
+                }
+                else
+                {
+                    currentEventWithStatus.Status = statusTemp.Status;
+                }
+                    currentEventWithStatus.doIOwnedIt = (currentEvent.OwnerId == userId);
+            
+                return currentEventWithStatus;
+            }
+
+        public async Task<User> GetOwnerAsync(string ownerId)
+        {
+            return await _context.Users.Where(x => x.Id == ownerId).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> RemoveEvent(Guid eventId, string userId)
+        {
+            var eventRequest = await _context.Event.FirstOrDefaultAsync(x => x.Id == eventId && x.OwnerId == userId);
+            if (eventRequest == null)
+            {
+                return false;
+            }
+
+            _context.Event.Remove(eventRequest);
+            var saveResult = await _context.SaveChangesAsync();
+            return saveResult == 1;
+        }
     }
 }
