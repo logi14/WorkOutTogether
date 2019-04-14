@@ -72,10 +72,10 @@ namespace WorkOutTogether.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if(currenEvent.CurrentPeopleNumber < currenEvent.HowManyPeople)
             {
+                currenEvent.CurrentPeopleNumber++;
                 var successful = await _eventService.JoinEventAsync(currenEvent, currentUser);
                 if(!successful)
                 {
-                    currenEvent.CurrentPeopleNumber++;
                     return RedirectToAction("Index");
                 }
             }
@@ -88,15 +88,14 @@ namespace WorkOutTogether.Controllers
             var currenEvent = await _eventService.GetEvent(id);
 
             var currentUser = await _userManager.GetUserAsync(User);
-            if (currenEvent.CurrentPeopleNumber < currenEvent.HowManyPeople)
-            {
-                var successful = await _eventService.ResignEventAsync(currenEvent, currentUser);
-                if (!successful)
-                {
-                    currenEvent.CurrentPeopleNumber--;
-                    return RedirectToAction("Index");
-                }
+            
+            currenEvent.CurrentPeopleNumber--;
+            var successful = await _eventService.ResignEventAsync(currenEvent, currentUser);
+            if (!successful)
+            { 
+                return RedirectToAction("Index");
             }
+            
             return RedirectToAction("Index");
         }
 
@@ -124,12 +123,14 @@ namespace WorkOutTogether.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             var currenEvent = await _eventService.GetSingleEventWithStatus(currentUser.Id, id);
             var userJoined = await _eventService.GetUsersJoined(id);
+            var userToAccept = await _eventService.GetUsersToAccept(id);
             var owner = await _eventService.GetOwnerAsync(currenEvent.OwnerId);
 
             var model = new EventsForDetailsViewModel()
             {
                 EventDetailed = currenEvent,
-                Users = userJoined.ToArray(),
+                UsersAccepted = userJoined.ToArray(),
+                UsersToAccept = userToAccept.ToArray(),
                 Owner = owner
             };
 
@@ -150,6 +151,18 @@ namespace WorkOutTogether.Controllers
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
+        }
+        [Route("{controller}/{action}/{eventId?}/{userId}")]
+        public async Task<IActionResult> AccepUser(Guid eventId, string userId)
+        {
+            var succeed = await _eventService.AcceptUserAsync(eventId, userId);
+            return RedirectToAction("DisplayEvents");
+        }
+
+        public async Task<IActionResult> RejectUser(Guid eventId, string userId)
+        {
+            var succeed = await _eventService.RejectUserAsync(eventId, userId);
+            return RedirectToAction("DisplayEvents");
         }
     }
 }

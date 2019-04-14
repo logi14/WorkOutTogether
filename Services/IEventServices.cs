@@ -17,8 +17,12 @@ namespace WorkOutTogether.Services
         Task<int> GetEventStatus(Guid itemId, string userId);
         Task<EventWithStatus[]> GetEventWithStatus(string userId);
         Task<List<User>> GetUsersJoined(Guid idEvent);
+        Task<List<User>> GetUsersToAccept(Guid idEvent);
         Task<User> GetOwnerAsync(string ownerId);
         Task<EventWithStatus> GetSingleEventWithStatus(string userId, Guid eventId);
         Task<bool> RemoveEvent(Guid eventId, string userId);
+        Task<bool> RejectUserAsync(Guid eventId, string userId);
+        Task<bool> AcceptUserAsync(Guid eventId, string userId);
+        
     }
 }
