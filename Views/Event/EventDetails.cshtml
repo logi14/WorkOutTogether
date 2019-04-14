@@ -8,11 +8,13 @@
 
 @if(Model.EventDetailed.doIOwnedIt){
 <div>
-    <div>@ViewData["Title"]</div>
-    <h2>Events you joined</h2>
-    <p>@Model.EventDetailed.HowManyPeople </p>
+    <h2 class="pt-3 pb-3">@Model.EventDetailed.Name </h2>
+    <h5>Osób zapisanych:</h5>
+    <p>@Model.EventDetailed.HowManyPeople/@Model.EventDetailed.CurrentPeopleNumber </p>
+    <h5>Czas rozpoczęcia:</h5>
     <p>@Model.EventDetailed.StartDate </p>
-    <p>@Model.EventDetailed.CurrentPeopleNumber </p>
+    <h5>Event contribiutor:</h5>
+    <p>@Model.Owner.Name @Model.Owner.Surname</p>
     
     <table>
     @foreach (var item in Model.UsersAccepted)
@@ -24,6 +26,7 @@
         </tr>
     }
     </table>
+
     <table>
     @foreach (var item in Model.UsersToAccept)
     {
@@ -41,13 +44,14 @@
     <a asp-controller="Event" asp-action="RemoveEvent" asp-route-eventId = "@Model.EventDetailed.Id">Remove Event</a>  
 </div>
 }else{
-    <div>
-    <div>@ViewData["Title"]</div>
-    <h2>Events you joined</h2>
-    <p>@Model.EventDetailed.HowManyPeople </p>
+<div>
+    <h2 class="pt-3 pb-3">@Model.EventDetailed.Name </h2>
+    <h5>Osób zapisanych:</h5>
+    <p>@Model.EventDetailed.HowManyPeople/@Model.EventDetailed.CurrentPeopleNumber </p>
+    <h5>Czas rozpoczęcia:</h5>
     <p>@Model.EventDetailed.StartDate </p>
-    <p>@Model.EventDetailed.CurrentPeopleNumber </p>
-    <p>@Model.Owner.Email</p>
+    <h5>Event contribiutor:</h5>
+    <p>@Model.Owner.Name @Model.Owner.Surname</p>
     
     <table>
     @foreach (var item in Model.UsersAccepted)
