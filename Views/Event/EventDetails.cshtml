@@ -1,17 +1,21 @@
+@using Microsoft.AspNetCore.Identity
 @model EventsForDetailsViewModel
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Events";
 }
 
+@if(Model.EventDetailed.doIOwnedIt){
 <div>
     <div>@ViewData["Title"]</div>
     <h2>Events you joined</h2>
-    <p>@Model.eventDetailed.HowManyPeople </p>
-    <p>@Model.eventDetailed.Name </p>
-    <p>@Model.eventDetailed.CurrentPeopleNumber </p>
+    <p>@Model.EventDetailed.HowManyPeople </p>
+    <p>@Model.EventDetailed.StartDate </p>
+    <p>@Model.EventDetailed.CurrentPeopleNumber </p>
+    
     <table>
-    @foreach (var item in Model.users)
+    @foreach (var item in Model.Users)
     {
        <tr>
             <td>
@@ -20,4 +24,33 @@
         </tr>
     }
     </table>
+    <a asp-controller="Event" asp-action="RemoveEvent" asp-route-id = "@Model.EventDetailed.Id">Remove Event</a>  
 </div>
+}else{
+    <div>
+    <div>@ViewData["Title"]</div>
+    <h2>Events you joined</h2>
+    <p>@Model.EventDetailed.HowManyPeople </p>
+    <p>@Model.EventDetailed.StartDate </p>
+    <p>@Model.EventDetailed.CurrentPeopleNumber </p>
+    <p>@Model.Owner.Email</p>
+    
+    <table>
+    @foreach (var item in Model.Users)
+    {
+       <tr>
+            <td>
+               @item.Name
+            </td>
+        </tr>
+    }
+    </table>
+    <div>
+        @if(Model.EventDetailed.Status == 1) {
+            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id">Resign</a>  
+        }else{
+            <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@Model.EventDetailed.Id">Join</a>  
+        }
+    </div>
+</div>
+}

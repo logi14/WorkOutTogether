@@ -118,18 +118,38 @@ namespace WorkOutTogether.Controllers
         [Route("{controller}/{action}/{id?}")]
         public async Task<IActionResult> EventDetails(Guid id)
         {
-            var currenEvent = await _eventService.GetEvent(id);
+            if(id == null)
+                return RedirectToAction("Index");
+                
+            var currentUser = await _userManager.GetUserAsync(User);
+            var currenEvent = await _eventService.GetSingleEventWithStatus(currentUser.Id, id);
             var userJoined = await _eventService.GetUsersJoined(id);
-            
-            
+            var owner = await _eventService.GetOwnerAsync(currenEvent.OwnerId);
+
             var model = new EventsForDetailsViewModel()
             {
-                eventDetailed = currenEvent,
-                users = userJoined.ToArray()
-
+                EventDetailed = currenEvent,
+                Users = userJoined.ToArray(),
+                Owner = owner
             };
 
             return View(model);
+        }
+
+        [Route("{controller}/{action}/{id?}")]
+        public async Task<IActionResult> RemoveEvent(Guid eventId)
+        {
+            if (eventId == null)
+                return RedirectToAction("Index");
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            var succeed = await _eventService.RemoveEvent(eventId, currentUser.Id);
+
+            if(succeed)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
         }
     }
 }

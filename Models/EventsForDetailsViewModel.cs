@@ -2,7 +2,9 @@ namespace WorkOutTogether.Models
 {
     public class EventsForDetailsViewModel
     {
-        public Event eventDetailed { get; set; } 
-        public User[] users {get; set; }
+        public EventWithStatus EventDetailed { get; set; } 
+        public User[] Users {get; set; }
+        public User Owner { get; set; }
+
     }
 }
