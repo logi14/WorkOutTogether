@@ -1,17 +1,23 @@
+@using Microsoft.AspNetCore.Identity
 @model EventsForDetailsViewModel
+@inject UserManager<User> UserManager
 
 @{
     ViewData["Title"] = "Events";
 }
 
+@if(Model.EventDetailed.doIOwnedIt){
 <div>
-    <div>@ViewData["Title"]</div>
-    <h2>Events you joined</h2>
-    <p>@Model.eventDetailed.HowManyPeople </p>
-    <p>@Model.eventDetailed.Name </p>
-    <p>@Model.eventDetailed.CurrentPeopleNumber </p>
+    <h2 class="pt-3 pb-3">@Model.EventDetailed.Name </h2>
+    <h5>Osób zapisanych:</h5>
+    <p>@Model.EventDetailed.HowManyPeople/@Model.EventDetailed.CurrentPeopleNumber </p>
+    <h5>Czas rozpoczęcia:</h5>
+    <p>@Model.EventDetailed.StartDate </p>
+    <h5>Event contribiutor:</h5>
+    <p>@Model.Owner.Name @Model.Owner.Surname</p>
+    
     <table>
-    @foreach (var item in Model.users)
+    @foreach (var item in Model.Users)
     {
        <tr>
             <td>
@@ -20,4 +26,34 @@
         </tr>
     }
     </table>
+    <button asp-controller="Event" asp-action="RemoveEvent" asp-route-eventId = "@Model.EventDetailed.Id" class="btn btn-primary">Remove Event</button>  
 </div>
+}else{
+<div>
+    <h2 class="pt-3 pb-3">@Model.EventDetailed.Name </h2>
+    <h5>Osób zapisanych:</h5>
+    <p>@Model.EventDetailed.HowManyPeople/@Model.EventDetailed.CurrentPeopleNumber </p>
+    <h5>Czas rozpoczęcia:</h5>
+    <p>@Model.EventDetailed.StartDate </p>
+    <h5>Event contribiutor:</h5>
+    <p>@Model.Owner.Name @Model.Owner.Surname</p>
+    
+    <table>
+    @foreach (var item in Model.Users)
+    {
+       <tr>
+            <td>
+               @item.Name
+            </td>
+        </tr>
+    }
+    </table>
+    <div>
+        @if(Model.EventDetailed.Status == 1) {
+            <button asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Resign</button>  
+        }else{
+            <button asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Join</button>  
+        }
+    </div>
+</div>
+}

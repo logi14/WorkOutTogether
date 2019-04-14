@@ -1,12 +1,21 @@
 @model Event
 
+<link rel="stylesheet" href="~/css/map.css" />
+
+<div class="row">
+    <div class="col-md-5 pt-3 pr-5 pl-5">
+<h3>Add new event:</h3>
 <form asp-action="AddEvent" method="POST">
-    <label asp-for="Name">Add new event</label>
-    <input asp-for="Name">
-    <label asp-for="StartDate">Event data</label>
-    <input asp-for="StartDate">
-    <label asp-for="latitude" style="display:none;">Latitude</label>
+    <div class="form-group">
+    <label asp-for="Name">Event:</label>
+    <input asp-for="Name" class="form-control"><br/>
+
+    <label asp-for="StartDate">Event date:</label>
+    <input asp-for="StartDate" class="form-control"><br/>
+
+    <label asp-for="latitude" style="display:none;">Latitude:</label>
     <label asp-for="longitude" style="display:none;">Longitude</label>
+
     <input asp-for="latitude" id="lat" style="display:none;">
     <input asp-for="longitude" id="lng" style="display:none;">
     <label asp-for="HowManyPeople">How many people</label>
@@ -16,8 +25,20 @@
     <button type="button" onclick="addAddres()">Dodaj</button>
     <button type="submit" id='smt' disabled="true" onclick="addEvent()">Add</button>
 
+    <label asp-for="HowManyPeople">How many people:</label>
+    <input asp-for="HowManyPeople"class="form-control"><br/>
 
-    <div style="height:500px;width:100%;" id="map"></div>
+    <label>Adress: (optional)</label>
+    <input id="address" class="form-control"><br/>
+    <button type="button" onclick="addAddres()" class="btn btn-primary">Add marker</button>
+    <button type="submit" onclick="addEvent()" class="btn btn-primary">Add event</button>
+    </div>
+
+    </div>
+        <div class="col-md-7 pr-0 pl-0">
+            <div id="map" class="full-map"></div>
+        </div>
+</div>
 
 <script language="javascript" type="text/javascript" >
         var addedMarkerThisSession = false;

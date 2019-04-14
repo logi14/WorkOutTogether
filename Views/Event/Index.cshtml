@@ -7,40 +7,26 @@
     ViewData["Title"] = "Events";
 }
 
-<style>
-    .container{
-        max-width: none;
-        margin: 0;
-    }
-    main{
-        width: 100%;
-    }
-    .full-map{
-        margin-top: -16px;
-        margin-bottom: -16px;
-        min-height: calc(100vh - 118px);
-    }
-    .scroll{
-        overflow-y: scroll;
-    }
 
-</style>
+<link rel="stylesheet" href="~/css/map.css" />
 
 <div onload="loadEvents()">
 
     <div class="row">
 
-        <div class="col-md-5 scroll">
+        <div class="col-md-5 scroll ">
             <h3>
                 @ViewData["Title"]
             </h3>
 
-            <table id="events" class="table">
+            <table id="events" class="table pt-3">
             @foreach (var item in Model.Events)
             {
+
             <tr class="eventRows" onmouseover="hoverMarker()">
                     <td>
                          @item.Name
+
                     </td>
                     <td >
                         @item.StartDate
@@ -63,8 +49,6 @@
                 </tr>
             }
             </table>
-            <a asp-area="" asp-controller="Event" asp-action="EventForm">Add event</a>
-
         </div>
         <div class="col-md-7 pr-0 pl-0">
             <div id="map" class="full-map"></div>
