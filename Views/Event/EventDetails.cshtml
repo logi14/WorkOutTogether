@@ -7,23 +7,27 @@
 }
 
 @if(Model.EventDetailed.doIOwnedIt){
-<div>
+<div class="row">
+    <div class="col-md-6">
     <h2 class="pt-3 pb-3">@Model.EventDetailed.Name </h2>
-    <h5>Osób zapisanych:</h5>
-    <p>@Model.EventDetailed.HowManyPeople/@Model.EventDetailed.CurrentPeopleNumber </p>
-    <h5>Czas rozpoczęcia:</h5>
+    <h5>Participants:</h5>
+    <p>@Model.EventDetailed.CurrentPeopleNumber/@Model.EventDetailed.HowManyPeople</p>
+    <h5>Start time:</h5>
     <p>@Model.EventDetailed.StartDate </p>
     <h5>Event contribiutor:</h5>
     <p>@Model.Owner.Name @Model.Owner.Surname</p>
-    
+    <a asp-controller="Event" asp-action="RemoveEvent" asp-route-eventId = "@Model.EventDetailed.Id" class="btn btn-primary">Remove Event</a>  
+
+    </div>
+    <div class="col-md-6">
     <table>
     @foreach (var item in Model.UsersAccepted)
     {
-       <tr>
-            <td>
+       <td>
+            <tr>
                @item.Name
-            </td>
-        </tr>
+            </tr>
+        </td>
     }
     </table>
 
@@ -31,24 +35,25 @@
     @foreach (var item in Model.UsersToAccept)
     {
        <tr>
-            <td>
-               @item.Name
-            </td>
-            <td>
-                <a asp-controller="Event" asp-action="AccepUser" asp-route-eventId = "@Model.EventDetailed.Id" asp-route-userId = "@item.Id">Accept User</a>
-                <a asp-controller="Event" asp-action="RejectUser" asp-route-eventId = "@Model.EventDetailed.Id" asp-route-userId = "@item.Id">Reject User</a>
+            <td class="p-2">
+               <p><i>Request for acceptance: </i></p> @item.Name <br/>
+                <br/>
+                <a asp-controller="Event" asp-action="AccepUser" asp-route-eventId = "@Model.EventDetailed.Id" asp-route-userId = "@item.Id" class="btn btn-primary">Accept User</a>
+                <a asp-controller="Event" asp-action="RejectUser" asp-route-eventId = "@Model.EventDetailed.Id" asp-route-userId = "@item.Id" class="btn btn-primary">Reject User</a>
+                <br/>
             </td>
         </tr>
     }
     </table>
-    <a asp-controller="Event" asp-action="RemoveEvent" asp-route-eventId = "@Model.EventDetailed.Id">Remove Event</a>  
+    </div>
+    
 </div>
 }else{
 <div>
     <h2 class="pt-3 pb-3">@Model.EventDetailed.Name </h2>
-    <h5>Osób zapisanych:</h5>
-    <p>@Model.EventDetailed.HowManyPeople/@Model.EventDetailed.CurrentPeopleNumber </p>
-    <h5>Czas rozpoczęcia:</h5>
+    <h5>Participants:</h5>
+    <p>@Model.EventDetailed.CurrentPeopleNumber/@Model.EventDetailed.HowManyPeople</p>
+    <h5>Start time:</h5>
     <p>@Model.EventDetailed.StartDate </p>
     <h5>Event contribiutor:</h5>
     <p>@Model.Owner.Name @Model.Owner.Surname</p>
@@ -65,13 +70,13 @@
     </table>
     <div>
         @if(Model.EventDetailed.Status == 1) {
-            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id">Resign (you are accepted)</a>  
+            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Resign (you are accepted)</a>  
         }else if(Model.EventDetailed.Status == 2){
-            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id">Resign</a>  
+            <a asp-controller="Event" asp-action="ResignEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Resign</a>  
         }else if (Model.EventDetailed.Status == 3){
              <p>You were rejected by event owner.</p>
         }else{
-            <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@Model.EventDetailed.Id">Join</a> 
+            <a asp-controller="Event" asp-action="JoinEvent" asp-route-id = "@Model.EventDetailed.Id" class="btn btn-primary">Join</a> 
         }
     </div>
 </div>

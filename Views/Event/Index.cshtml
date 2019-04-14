@@ -14,8 +14,8 @@
 
     <div class="row">
 
-        <div class="col-md-5 scroll ">
-            <h3>
+        <div class="col-md-5 scroll p-5">
+            <h3 class="pb-3">
                 @ViewData["Title"]
             </h3>
 
@@ -23,10 +23,11 @@
             @foreach (var item in Model.Events)
             {
 
-            <tr class="eventRows" onmouseover="hoverMarker()">
+            <tr class="eventRows border" onmouseover="hoverMarker()">
                     <td>
-                         @item.Name
-
+                    <a asp-area="" asp-controller="Event" asp-action="EventDetails" asp-route-id= "@item.Id">
+                        @item.Name
+                        </a> 
                     </td>
                     <td >
                         @item.StartDate
@@ -125,7 +126,7 @@
                     for (i = 0; i < rows.length; i++) {
                         row = table.rows[i];
                      var lng = row.cells[2].innerHTML.trim();
-                     var lat = row.cells[3].innerHTML.trim();                       
+                     var lat = row.cells[3].innerHTML.trim();                                           
                     if (parseFloat(lng).toFixed(6) == parseFloat(this.getPosition().lng()).toFixed(6) && parseFloat(lat).toFixed(6) == parseFloat(this.getPosition().lat()).toFixed(6)){
                         if (infoWindowOpened){
                                 infowindow.close();
@@ -138,9 +139,9 @@
                             });
                             infowindow.open(map,this);
                             for (var x = 0; x<rows.length;x++){
-                                rows[x].style.background = "#FFFFFF"
+                                rows[x].style.background = "#f8f9fa"
                             }
-                            row.style.background = "#808080";
+                            row.style.background = "#dbdbdb";
                             infoWindowOpened = true;
                         }
                     }
@@ -173,9 +174,9 @@
                             infowindow.open(map, markers[k]);
                             infoWindowOpened = true;
                             for (var x = 0; x<rows.length;x++){
-                                rows[x].style.background = "#FFFFFF"
+                                rows[x].style.background = "#f8f9fa"
                             }
-                            row.style.background = "#808080";
+                            row.style.background = "#dbdbdb";
                         }
                     }
                   };
